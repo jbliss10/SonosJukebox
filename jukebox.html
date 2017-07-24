@@ -1,0 +1,44 @@
+<!doctype html5>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">    
+<title>Jukebox</title>
+<!-- Bootstrap -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    
+</head>
+<body>
+<!--<img src = "http://l7.alamy.com/zooms/0f95b8b33bd048218f77bee6b0257be7/jukebox-ba14ag.jpg"></img>  -->
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.1.2/papaparse.js"></script>
+<script>
+    function arrayToTable(tableData) {
+        $(tableData).each(function (i, rowData) {
+            $(rowData).each(function (j, cellData) {
+				btn=document.createElement("input");
+				btn.type = "button"
+				btn.value = cellData
+				btn.name = cellData
+				btn.className = "btn btn-sm btn-default"
+				$('body').append(btn)
+        });
+    }
+
+    $.ajax({
+        type: "GET",
+        url: "http://10.0.0.148/jukebox2.csv",
+        success: function (data) {
+            $('body').append(arrayToTable(Papa.parse(data).data));
+        }
+    });
+</script>
+</body>

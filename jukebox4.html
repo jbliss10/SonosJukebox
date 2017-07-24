@@ -1,0 +1,165 @@
+<!doctype html5>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">    
+<title>Jukebox</title>
+<!-- Bootstrap -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<style type="text/css">
+	  .strip
+	  {
+	    background-image: "strip.jpg";
+		width: 190px;
+		font-weight: bold;
+	  }
+	  </style>
+</head>
+<body>
+<!--<img src = "http://l7.alamy.com/zooms/0f95b8b33bd048218f77bee6b0257be7/jukebox-ba14ag.jpg"></img>  -->
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<!-- ><script src="http://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
+
+  <button id="prevbtn" class="btn-link"><img width = "40px" src = "previous.png"></button>
+  <script>
+	  	$('#prevbtn').on('click', function() { $.get("http://localhost:5005/WU TANG CLAN/previous") });
+  </script>
+
+  
+  <button id="playbtn" class="btn-link"><img width = "40px" src = "play.png"></button>
+  <script>
+	  	$('#playbtn').on('click', function() { $.get("http://localhost:5005/WU TANG CLAN/playpause") });
+  </script>
+		
+  <button id="pausebtn" class="btn-link"><img width = "40px" src = "pause.png"></button>
+  <script>
+	  	$('#pausebtn').on('click', function() { $.get("http://localhost:5005/WU TANG CLAN/pause") });
+  </script>
+
+   		
+  <button id="nextbtn" class="btn-link"><img width = "40px" src = "next.png"></button>
+  <script>
+	  	$('#nextbtn').on('click', function() { $.get("http://localhost:5005/WU TANG CLAN/next") });
+  </script>
+
+
+  <div id="rooms" class="btn"  input type="checkbox">
+  <script>
+  	$.getJSON("http://localhost:5005/zones",
+  	function (data) {
+  	    for (var i = 0; i < data.length; i++) { 
+  			btn=document.createElement("input");
+  			btn.type = "checkbox"
+  			btn.value = data[i]['members'][0]['roomName']
+  			btn.name = data[i]['members'][0]['roomName']
+  			btn.className = "btn"
+			btn.id=data[i]['members'][0]['roomName']
+			btn.textb=data[i]['members'][0]['roomName']
+  			$("#rooms").append(btn)
+			$("#rooms").append(" " + data[i]['members'][0]['roomName']+ " ")
+  	    }
+  	});
+	$('#rooms').on('click', 'input', function(e) {
+		if (document.getElementById(this.value).checked) {
+			$.get("http://localhost:5005/"+this.value+"/join/WU TANG CLAN")}
+			else {
+				$.get("http://localhost:5005/"+this.value+"/leave/WU TANG CLAN");
+		}})
+
+	
+	</script>
+  </div>
+	
+			
+</div>
+
+<div class="container">
+ 	    <div class = "col">
+			<h2>Artists</h2>
+			<div id="myartists">
+
+			</div>
+		</div>
+		
+	<div class = "col">
+		<h2>Playlists</h2>
+		<div id="myplaylists">
+
+		</div>
+    </div>
+	
+	<div class = "col">
+		<h2>Albums</h2>
+		<div id="albums">
+
+		</div>
+    </div>
+
+ </div>
+ 
+
+
+<script>
+	$.getJSON("http://localhost:5005/playlists",
+	function (data) {
+	    for (var i = 0; i < data.length; i++) { 
+			btn =document.createElement("input");
+			btn.type = "button"
+			btn.value = data[i]
+			btn.name = data[i]
+			btn.className = "btn btn-sm btn-default strip"
+			$("#myplaylists").append(btn)
+			
+		}
+	});
+	$("#myplaylists").on('click', 'input', function(e) { 	$.get('http://localhost:5005/WU TANG CLAN/playlist/' + e.target.name) 
+	});
+</script>
+      
+<script>
+	$.getJSON("http://localhost:5005/favorites",
+	function (data) {
+	    for (var i = 0; i < data.length; i++) { 
+			btn=document.createElement("input");
+			btn.type = "button"
+			btn.value = data[i]
+			btn.name = data[i]
+			btn.className = "btn btn-sm btn-default strip"
+			$("#myartists").append(btn)
+	    }
+	});
+	$("#myartists").on('click', 'input', function(e) { $.get('http://localhost:5005/WU TANG CLAN/favorite/' + e.target.name) 
+	});
+</script>
+
+<script>
+	
+	var data = JSON.parse('[{ "album": "Rubber Soul"},{"album": "Born To Die"},{"album": "Disintegration"},{ "album": "Enter the Wu Tang"},{"album": "Liquid Swords"},{"album": "Kind of Blue"}]');
+
+	albums(data);
+
+	function albums(data) {
+	    for (var i = 0; i < data.length; i++) { 
+			btn=document.createElement("input");
+			btn.type = "button"
+			btn.value = data[i].album
+			btn.name = data[i].album
+			btn.className = "btn btn-sm btn-default strip"
+			$("#albums").append(btn)
+	    }
+	};
+	
+	$("#albums").on('click', 'input', function(e) { $.get('http://localhost:5005/WU TANG CLAN/musicsearch/spotify/album/' + e.target.name) 
+	});
+	
+</script>
+
+</body>
+
